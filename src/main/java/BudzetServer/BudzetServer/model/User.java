@@ -1,0 +1,38 @@
+package BudzetServer.BudzetServer.model;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+@Entity
+@Table(name = "app_user")
+@EntityListeners(AuditingEntityListener.class)
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String login;
+    private String password;
+    private String firstName;
+    private String lastName;
+    private Boolean isEnabled = false;
+    private Boolean isLocked = false;
+
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
+
+}

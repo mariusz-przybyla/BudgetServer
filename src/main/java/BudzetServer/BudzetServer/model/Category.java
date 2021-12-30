@@ -1,30 +1,25 @@
 package BudzetServer.BudzetServer.model;
 
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
-@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 @Entity
 public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
-    private double price;
 
-    @Enumerated(value = EnumType.STRING)
-    private CategoryType type;
-
-    @Override
-    public String toString() {
-        return "Category{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", price=" + price +
-                ", type=" + type +
-                '}';
-    }
+//    parametr weszło/wyszlo 1 - wpływy, -1 - wydatki(koszty)
+    private Integer io;
 }
