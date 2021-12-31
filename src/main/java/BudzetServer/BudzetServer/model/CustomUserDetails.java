@@ -1,18 +1,22 @@
 package BudzetServer.BudzetServer.model;
 
-import lombok.Builder;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.Entity;
 import java.util.Collection;
 
+@RequiredArgsConstructor
 @Data
-@Builder
 @Entity
 public class CustomUserDetails extends User implements UserDetails {
 
+
+    public CustomUserDetails(User user) {
+
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
