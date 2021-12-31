@@ -1,9 +1,6 @@
 package BudzetServer.BudzetServer.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -11,8 +8,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Data
 @Entity
 @Table(name = "app_user")
@@ -21,13 +16,13 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String login;
-    private String password;
-    private String firstName;
-    private String lastName;
-    private Boolean isEnabled = false;
-    private Boolean isLocked = false;
+    private final Long id;
+    private final String login;
+    private final String password;
+    private final String firstName;
+    private final String lastName;
+    private final Boolean isEnabled = false;
+    private final Boolean isLocked = false;
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -36,3 +31,4 @@ public class User {
     private LocalDateTime updatedAt;
 
 }
+

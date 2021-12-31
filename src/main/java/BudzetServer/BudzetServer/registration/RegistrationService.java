@@ -7,9 +7,7 @@ import BudzetServer.BudzetServer.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 
 import javax.persistence.Entity;
 import javax.transaction.Transactional;
@@ -42,7 +40,7 @@ public class RegistrationService {
 
         // send email to confirm registration
 //        String link = "http://localhost:8080/api/registration/confirm?token=" + token;
-//        emailSender.send(request.getEmail(), buildEmail(request.getFirstName(), link));
+//        emailSender.send(request.getLogin(), buildEmail(request.getFirstName(), link));
 
         return token;
     }

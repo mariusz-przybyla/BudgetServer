@@ -23,7 +23,7 @@ public class RegistrationController {
     @PostMapping
     public ResponseEntity<?> register(@Valid @RequestBody RegistrationRequest registrationRequest) {
         if (userRepository.existsByLogin(registrationRequest.getLogin())) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Email already exists!"));
+            return ResponseEntity.badRequest().body(new MessageResponse("Login already exists!"));
         }
 
         String token = registrationService.register(registrationRequest);
@@ -33,6 +33,6 @@ public class RegistrationController {
     @GetMapping("/confirm")
     public ResponseEntity<?> confirmRegistration(@RequestParam String token) {
         registrationService.confirmRegistration(token);
-        return ResponseEntity.ok(new MessageResponse("Email confirmed!"));
+        return ResponseEntity.ok(new MessageResponse("Login confirmed!"));
     }
 }
