@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -21,7 +22,6 @@ public class RegistrationService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final ConfirmationTokenService confirmationTokenService;
     private String clientUrl;
 
 
@@ -32,43 +32,14 @@ public class RegistrationService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
+
+        user.setCreatedAt(LocalDateTime.now());
+        user.setUpdatedAt(LocalDateTime.now());
+
         user = userRepository.save(user);
 
-        // generate registration token
-        String token = UUID.randomUUID().toString();
-        ConfirmationToken confirmationToken = new ConfirmationToken();
-        confirmationToken.setToken(token);
-        confirmationToken.setUser(user);
+        userRepository.enableUser(user.getLogin());
 
-        confirmationTokenService.saveToken(confirmationToken);
-
-        // send email to confirm registration
-//        String link = "http://localhost:8080/api/registration/confirm?token=" + token;
-//        emailSender.send(request.getLogin(), buildEmail(request.getFirstName(), link));
-
-        return token;
+        return "Registered";
     }
-
-    @Transactional
-    public void confirmRegistration(String token) {
-        ConfirmationToken confirmationToken = confirmationTokenService.getConfirmationToken(token)
-                .orElseThrow(() -> new NotFoundException("Token not found."));
-
-        if (confirmationToken.getConfirmedAt() != null) {
-            throw new IllegalStateException("Login already confirmed.");
-        }
-
-        confirmationTokenService.setConfirmedAt(token);
-        enableUser(confirmationToken.getUser().getLogin());
-    }
-
-    // TODO: Move to a User service
-    public int enableUser(String login) {
-        return userRepository.enableUser(login);
-    }
-
-//    private String buildLogin(String name, String link) {
-//        return "Hi " + name + "! Thank you for registering. Please click this" + "<a href='" + link + "'> link </a>" +
-//                "to verify your email and activate your account.";
-//    }
 }

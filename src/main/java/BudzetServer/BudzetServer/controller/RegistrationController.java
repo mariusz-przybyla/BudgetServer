@@ -32,10 +32,4 @@ public class RegistrationController {
 
         return ResponseEntity.ok().body(new RegistrationResponse(token));
     }
-
-    @GetMapping("/confirm")
-    public ResponseEntity<?> confirmRegistration(@RequestParam String token) {
-        registrationService.confirmRegistration(token);
-        return ResponseEntity.ok(new MessageResponse("Login confirmed!"));
-    }
 }
