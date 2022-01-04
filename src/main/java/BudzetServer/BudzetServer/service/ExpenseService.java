@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,20 +22,17 @@ public class ExpenseService {
     private final ExpenseRepository expenseRepository;
     private final CategoryRepository categoryRepository;
 
-    public List<ExpenseDto> getAllExpenses()
-    {
+    public List<ExpenseDto> getAllExpenses() {
         return expenseRepository.findAll().stream()
                 .map(item -> getExpense(item.getId()))
                 .collect(Collectors.toList());
     }
 
-    public List<Category> getAllCategories()
-    {
+    public List<Category> getAllCategories() {
         return categoryRepository.findAll();
     }
 
-    public ExpenseDto getExpense(Long id)
-    {
+    public ExpenseDto getExpense(Long id) {
         return expenseRepository
                 .findById(id)
                 .map(c -> ExpenseDto.builder()
@@ -61,4 +59,26 @@ public class ExpenseService {
 
         return getExpense(result.getId());
     }
+
+    public void deleteElement(Long id) {
+        expenseRepository.findById(id).ifPresent(expenseRepository::delete);
+    }
+
+    public ExpenseDto changeElement(AddExpenseDto addExpenseDto, Long id) {
+
+        return expenseRepository.findById(id)
+                .map(e -> {
+                    Category category = new Category();
+                    category.setId(addExpenseDto.getCategoryId());
+
+                    e.setName(addExpenseDto.getName());
+                    e.setPrice(addExpenseDto.getPrice());
+                    e.setCategory(category);
+
+                    return expenseRepository.save(e);
+                })
+                .map(e -> getExpense(e.getId()))
+                .orElseThrow();
+    }
+
 }

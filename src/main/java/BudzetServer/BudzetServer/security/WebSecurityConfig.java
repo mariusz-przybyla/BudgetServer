@@ -1,5 +1,6 @@
 package BudzetServer.BudzetServer.security;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,16 +22,14 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private UserDetailsService userDetailsService;
-    private JwtTokenProvider jwtTokenProvider;
+    private final UserDetailsService userDetailsService;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final H2ConsoleBrowserSupportAutoConfiguration.H2ConsoleBrowserSupportConfigurer h2ConsoleBrowserSupportConfigurer;
 
-    public WebSecurityConfig(UserDetailsService userDetailsService, JwtTokenProvider jwtTokenProvider) {
-        this.userDetailsService = userDetailsService;
-        this.jwtTokenProvider = jwtTokenProvider;
-    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
@@ -70,8 +69,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .and().csrf().disable()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
-            .authorizeRequests().antMatchers("/api/auth/**", "/api/registration/**").permitAll()
-            .anyRequest().authenticated();
+            .authorizeRequests().antMatchers("/").permitAll()
+                .and()
+                .authorizeRequests().antMatchers("/api/auth/**", "/api/registration/**", "/console/**").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .apply(h2ConsoleBrowserSupportConfigurer);
+
 
         http.addFilterBefore(getJwtAuthFilter(), UsernamePasswordAuthenticationFilter.class);
     }

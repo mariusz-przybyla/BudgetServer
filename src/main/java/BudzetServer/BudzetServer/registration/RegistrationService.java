@@ -7,34 +7,38 @@ import BudzetServer.BudzetServer.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.UUID;
 
-@NoArgsConstructor
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Data
 @Service
 public class RegistrationService {
 
-    private UserRepository userRepository;
-    private PasswordEncoder passwordEncoder;
-    private ConfirmationTokenService confirmationTokenService;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final ConfirmationTokenService confirmationTokenService;
     private String clientUrl;
 
 
     public String register(RegistrationRequest request) {
         User user = new User();
 
+        user.setLogin(request.getLogin());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
+        user = userRepository.save(user);
 
         // generate registration token
         String token = UUID.randomUUID().toString();
-        ConfirmationToken confirmationToken = new ConfirmationToken(token, user);
+        ConfirmationToken confirmationToken = new ConfirmationToken();
+        confirmationToken.setToken(token);
+        confirmationToken.setUser(user);
 
         confirmationTokenService.saveToken(confirmationToken);
 

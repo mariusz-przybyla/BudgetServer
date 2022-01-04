@@ -3,6 +3,7 @@ package BudzetServer.BudzetServer.controller;
 import BudzetServer.BudzetServer.dto.AddExpenseDto;
 import BudzetServer.BudzetServer.dto.ExpenseDto;
 import BudzetServer.BudzetServer.model.Category;
+import BudzetServer.BudzetServer.model.Expense;
 import BudzetServer.BudzetServer.service.ExpenseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -43,5 +44,19 @@ public class ExpenseController {
     public ExpenseDto addExpense(@RequestBody AddExpenseDto addExpenseDto)
     {
         return expenseService.addExpense(addExpenseDto);
+    }
+
+    @ResponseStatus(HttpStatus.GONE)
+    @DeleteMapping("/expense/{id}")
+    public void deleteElement(@PathVariable Long id)
+    {
+        expenseService.deleteElement(id);
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PutMapping("/expense/{id}")
+    public ExpenseDto changeElement(@RequestBody AddExpenseDto addExpenseDto, Long id)
+    {
+        return expenseService.changeElement(addExpenseDto, id);
     }
 }
