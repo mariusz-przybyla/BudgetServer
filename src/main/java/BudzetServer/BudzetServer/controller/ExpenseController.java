@@ -3,7 +3,6 @@ package BudzetServer.BudzetServer.controller;
 import BudzetServer.BudzetServer.dto.AddExpenseDto;
 import BudzetServer.BudzetServer.dto.ExpenseDto;
 import BudzetServer.BudzetServer.model.Category;
-import BudzetServer.BudzetServer.model.Expense;
 import BudzetServer.BudzetServer.service.ExpenseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
