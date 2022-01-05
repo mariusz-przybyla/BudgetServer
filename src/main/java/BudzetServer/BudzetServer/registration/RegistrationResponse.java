@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @CrossOrigin
 public class RegistrationResponse {
 
-    private final String confirmationToken;
+    private final String login;
 
 }
