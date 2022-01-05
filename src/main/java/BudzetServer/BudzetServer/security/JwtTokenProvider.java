@@ -20,6 +20,7 @@ public class JwtTokenProvider {
 
     private final UserDetailsService userDetailsService;
 
+
     public String createToken(Authentication auth) {
         CustomUserDetails userDetails = (CustomUserDetails) auth.getPrincipal();
         Date now = new Date(System.currentTimeMillis());
@@ -28,7 +29,7 @@ public class JwtTokenProvider {
         Claims claims = Jwts.claims().setSubject(userDetails.getUsername());
 
         return Jwts.builder()
-                .setClaims(claims)
+                .addClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
