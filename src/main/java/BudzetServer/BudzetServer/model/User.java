@@ -23,14 +23,14 @@ public class User {
     private String password;
     private String firstName;
     private String lastName;
-    private final Boolean isEnabled = false;
+    private final Boolean isEnabled = true;
     private final Boolean isLocked = false;
 
     @CreatedDate
     private LocalDateTime createdAt;
 
-//    @LastModifiedDate
-//    private LocalDateTime updatedAt;
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 
 }
 

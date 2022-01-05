@@ -5,6 +5,7 @@ import BudzetServer.BudzetServer.model.User;
 import BudzetServer.BudzetServer.repository.UserRepository;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ public class RegistrationService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+//    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private String clientUrl;
 
 
@@ -25,14 +27,13 @@ public class RegistrationService {
 
         user.setLogin(request.getLogin());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
+//        user.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
 
         user.setCreatedAt(LocalDateTime.now());
 
         user = userRepository.save(user);
-
-        userRepository.enableUser(user.getLogin());
 
         return "User registered!";
     }

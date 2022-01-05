@@ -2,7 +2,7 @@ package BudzetServer.BudzetServer.security;
 
 import BudzetServer.BudzetServer.model.CustomUserDetails;
 import io.jsonwebtoken.*;
-import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,12 +14,11 @@ import java.util.Date;
 import static BudzetServer.BudzetServer.security.SecurityConstants.EXPIRATION_TIME;
 import static BudzetServer.BudzetServer.security.SecurityConstants.SECRET_KEY;
 
-
-@Data
+@RequiredArgsConstructor
 @Component
 public class JwtTokenProvider {
 
-    private UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
 
     public String createToken(Authentication auth) {
         CustomUserDetails userDetails = (CustomUserDetails) auth.getPrincipal();

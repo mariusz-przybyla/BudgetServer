@@ -12,6 +12,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +37,21 @@ public class AuthController {
         String username = loginRequest.getLogin();
         String password = loginRequest.getPassword();
 
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+//        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+////        String password = "dupa123";
+//        String encodedPassword = passwordEncoder.encode(password);
+//
+//        System.out.println();
+//        System.out.println("Password is         : " + password);
+//        System.out.println("Encoded Password is : " + encodedPassword);
+//        System.out.println();
+//
+//
+//        boolean isPasswordMatch = passwordEncoder.matches(password, encodedPassword);
+//        System.out.println("Password : " + password + "   isPasswordMatch    : " + isPasswordMatch);
+
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(username, password);
+        Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtTokenProvider.createToken(authentication);
 
