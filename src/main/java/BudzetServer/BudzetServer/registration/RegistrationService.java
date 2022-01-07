@@ -18,7 +18,6 @@ public class RegistrationService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-//    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private String clientUrl;
 
 
@@ -27,7 +26,6 @@ public class RegistrationService {
 
         user.setLogin(request.getLogin());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-//        user.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
 
