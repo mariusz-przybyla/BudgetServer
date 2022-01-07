@@ -5,6 +5,7 @@ import BudzetServer.BudzetServer.dto.ExpenseDto;
 import BudzetServer.BudzetServer.exception.NotFoundException;
 import BudzetServer.BudzetServer.model.Expense;
 import BudzetServer.BudzetServer.model.Category;
+import BudzetServer.BudzetServer.model.User;
 import BudzetServer.BudzetServer.repository.ExpenseRepository;
 import BudzetServer.BudzetServer.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,19 +22,22 @@ public class ExpenseService {
     private final ExpenseRepository expenseRepository;
     private final CategoryRepository categoryRepository;
 
-    public List<ExpenseDto> getAllExpenses() {
-        return expenseRepository.findAll().stream()
-                .map(item -> getExpense(item.getId()))
+    public List<ExpenseDto> getAllExpenses(User user)
+    {
+        return expenseRepository.findAllByUser(user).stream()
+                .map(item -> getExpense(item.getId(), user))
                 .collect(Collectors.toList());
     }
 
-    public List<Category> getAllCategories() {
+    public List<Category> getAllCategories()
+    {
         return categoryRepository.findAll();
     }
 
-    public ExpenseDto getExpense(Long id) {
+    public ExpenseDto getExpense(Long id, User user)
+    {
         return expenseRepository
-                .findById(id)
+                .findByIdAndUser(id, user)
                 .map(c -> ExpenseDto.builder()
                         .id(c.getId())
                         .name(c.getName())
@@ -41,11 +45,11 @@ public class ExpenseService {
                         .type(c.getCategory().getName())
                         .build())
                 .orElseThrow(() -> new NotFoundException("Resource not found"));
-
     }
 
     @Transactional
-    public ExpenseDto addExpense(AddExpenseDto addExpenseDto) {
+    public ExpenseDto addExpense(AddExpenseDto addExpenseDto, User user)
+    {
         Expense expense = new Expense();
         Category category = new Category();
 
@@ -53,31 +57,30 @@ public class ExpenseService {
         expense.setName(addExpenseDto.getName());
         expense.setPrice(addExpenseDto.getPrice());
         expense.setCategory(category);
-
+        expense.setUser(user);
         Expense result = expenseRepository.save(expense);
 
-        return getExpense(result.getId());
+        return getExpense(result.getId(), user);
     }
 
-    public void deleteElement(Long id) {
-        expenseRepository.findById(id).ifPresent(expenseRepository::delete);
+    public void deleteElement(Long id, User user)
+    {
+        expenseRepository.findByIdAndUser(id, user).ifPresent(expenseRepository::delete);
     }
 
-    public ExpenseDto changeElement(AddExpenseDto addExpenseDto, Long id) {
-
+    public ExpenseDto changeElement(AddExpenseDto addExpenseDto, Long id, User user)
+    {
         return expenseRepository.findById(id)
                 .map(e -> {
                     Category category = new Category();
                     category.setId(addExpenseDto.getCategoryId());
-
                     e.setName(addExpenseDto.getName());
                     e.setPrice(addExpenseDto.getPrice());
                     e.setCategory(category);
 
                     return expenseRepository.save(e);
                 })
-                .map(e -> getExpense(e.getId()))
+                .map(e -> getExpense(e.getId(), user))
                 .orElseThrow();
     }
-
 }

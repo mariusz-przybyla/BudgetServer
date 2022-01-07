@@ -5,45 +5,55 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.Entity;
 import java.util.Collection;
+import java.util.Collections;
 
 
 @Entity
 public class CustomUserDetails extends User implements UserDetails {
 
-
-    public CustomUserDetails(User user) {
+    public CustomUserDetails(User user)
+    {
         this.setId(user.getId());
         this.setLogin(user.getLogin());
         this.setPassword(user.getPassword());
+        this.setFirstName(user.getFirstName());
+        this.setLastName(user.getLastName());
+    }
+
+//    odpowiedzilane za uprawnienia
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities()
+    {
+        return Collections.EMPTY_LIST;
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+    public String getUsername()
+    {
+        return getFirstName() + " " + getLastName();
     }
 
     @Override
-    public String getUsername() {
-        return null;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
+    public boolean isAccountNonExpired()
+    {
         return true;
     }
 
     @Override
-    public boolean isAccountNonLocked() {
+    public boolean isAccountNonLocked()
+    {
         return true;
     }
 
     @Override
-    public boolean isCredentialsNonExpired() {
+    public boolean isCredentialsNonExpired()
+    {
         return true;
     }
 
     @Override
-    public boolean isEnabled() {
+    public boolean isEnabled()
+    {
         return true;
     }
 }

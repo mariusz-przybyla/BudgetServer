@@ -1,6 +1,5 @@
 package BudzetServer.BudzetServer.controller;
 
-import BudzetServer.BudzetServer.dto.LoginRequest;
 import BudzetServer.BudzetServer.dto.LoginResponse;
 import BudzetServer.BudzetServer.model.CustomUserDetails;
 import BudzetServer.BudzetServer.model.User;
@@ -33,7 +32,8 @@ public class AuthController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Valid @RequestBody User loginRequest) {
+    public ResponseEntity<?> login(@Valid @RequestBody User loginRequest)
+    {
         String username = loginRequest.getLogin();
         String password = loginRequest.getPassword();
 

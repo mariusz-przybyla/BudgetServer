@@ -23,13 +23,13 @@ public class RegistrationController {
     private final RegistrationService registrationService;
 
     @PostMapping
-    public ResponseEntity<?> register(@Valid @RequestBody RegistrationRequest registrationRequest) {
-        if (userRepository != null && userRepository.existsByLogin(registrationRequest.getLogin())) {
+    public ResponseEntity<?> register(@Valid @RequestBody RegistrationRequest registrationRequest)
+    {
+        if (userRepository != null && userRepository.existsByLogin(registrationRequest.getLogin()))
+        {
             return ResponseEntity.badRequest().body(new MessageResponse("Login already exists!"));
         }
-
         String token = registrationService.register(registrationRequest);
-
         return ResponseEntity.ok().body(new RegistrationResponse(token));
     }
 }

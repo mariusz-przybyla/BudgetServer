@@ -23,8 +23,8 @@ public class JwtTokenProvider {
 
     private final UserDetailsService userDetailsService;
 
-
-    public String createToken(User userDetails) {
+    public String createToken(User userDetails)
+    {
         Map<String, Object> claims = new HashMap<>();
         claims.put("user", userDetails.getLogin());
 
@@ -37,31 +37,44 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public boolean validateToken(String token) {
-        try {
+    public boolean validateToken(String token)
+    {
+        try
+        {
             Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
             return true;
-        } catch (SignatureException ex) {
+        } catch (SignatureException ex)
+        {
             System.out.println("Invalid JWT Signature");
-        } catch (MalformedJwtException ex) {
+        }
+        catch (MalformedJwtException ex)
+        {
             System.out.println("Invalid JWT Token");
-        } catch (ExpiredJwtException ex) {
+        }
+        catch (ExpiredJwtException ex)
+        {
             System.out.println("Expired JWT Token");
             System.out.println(ex.getMessage());
-        } catch (UnsupportedJwtException ex) {
+        }
+        catch (UnsupportedJwtException ex)
+        {
             System.out.println("Unsupported JWT Token");
-        } catch (IllegalArgumentException ex) {
+        }
+        catch (IllegalArgumentException ex)
+        {
             System.out.println("JWT claims string is empty");
         }
         return false;
     }
 
-    public UsernamePasswordAuthenticationToken getAuthentication(String token) {
+    public UsernamePasswordAuthenticationToken getAuthentication(String token)
+    {
         UserDetails userDetails = userDetailsService.loadUserByUsername(getUsername(token));
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 
-    public String getUsername(String token) {
+    public String getUsername(String token)
+    {
         return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getSubject();
     }
 }

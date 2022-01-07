@@ -29,8 +29,7 @@ public class H2ConsoleBrowserSupportAutoConfiguration {
         @Override
         public void init(final HttpSecurity httpSecurity) throws Exception
         {
-            final var enabled = h2ConsoleProperties.getEnabled();
-            if (enabled)
+            if (h2ConsoleProperties.getEnabled())
             {
                 httpSecurity.headers().frameOptions().sameOrigin();
             }

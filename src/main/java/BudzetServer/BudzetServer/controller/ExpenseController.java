@@ -3,9 +3,11 @@ package BudzetServer.BudzetServer.controller;
 import BudzetServer.BudzetServer.dto.AddExpenseDto;
 import BudzetServer.BudzetServer.dto.ExpenseDto;
 import BudzetServer.BudzetServer.model.Category;
+import BudzetServer.BudzetServer.model.User;
 import BudzetServer.BudzetServer.service.ExpenseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,35 +29,40 @@ public class ExpenseController {
     }
 
     @GetMapping("/expense")
-    public List<ExpenseDto> getAllExpenses()
+    public List<ExpenseDto> getAllExpenses(Authentication authentication)
     {
-        return expenseService.getAllExpenses();
+        User user = (User)authentication.getPrincipal();
+        return expenseService.getAllExpenses(user);
     }
 
     @GetMapping("/expense/{id}")
-    public ExpenseDto getExpense(@PathVariable Long id)
+    public ExpenseDto getExpense(@PathVariable Long id, Authentication authentication)
     {
-        return expenseService.getExpense(id);
+        User user = (User)authentication.getPrincipal();
+        return expenseService.getExpense(id, user);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/expense")
-    public ExpenseDto addExpense(@RequestBody AddExpenseDto addExpenseDto)
+    public ExpenseDto addExpense(@RequestBody AddExpenseDto addExpenseDto, Authentication authentication)
     {
-        return expenseService.addExpense(addExpenseDto);
+        User user = (User)authentication.getPrincipal();
+        return expenseService.addExpense(addExpenseDto, user);
     }
 
     @ResponseStatus(HttpStatus.GONE)
     @DeleteMapping("/expense/{id}")
-    public void deleteElement(@PathVariable Long id)
+    public void deleteElement(@PathVariable Long id, Authentication authentication)
     {
-        expenseService.deleteElement(id);
+        User user = (User)authentication.getPrincipal();
+        expenseService.deleteElement(id, user);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PutMapping("/expense/{id}")
-    public ExpenseDto changeElement(@RequestBody AddExpenseDto addExpenseDto, Long id)
+    public ExpenseDto changeElement(@RequestBody AddExpenseDto addExpenseDto, Long id, Authentication authentication)
     {
-        return expenseService.changeElement(addExpenseDto, id);
+        User user = (User)authentication.getPrincipal();
+        return expenseService.changeElement(addExpenseDto, id, user);
     }
 }

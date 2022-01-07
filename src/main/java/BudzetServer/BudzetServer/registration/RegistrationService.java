@@ -20,19 +20,16 @@ public class RegistrationService {
     private final PasswordEncoder passwordEncoder;
     private String clientUrl;
 
-
-    public String register(RegistrationRequest request) {
+    public String register(RegistrationRequest request)
+    {
         User user = new User();
-
         user.setLogin(request.getLogin());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
-
         user.setCreatedAt(LocalDateTime.now());
-
         user = userRepository.save(user);
 
-        return "User registered!";
+        return "User registered! - " + user.getLogin();
     }
 }

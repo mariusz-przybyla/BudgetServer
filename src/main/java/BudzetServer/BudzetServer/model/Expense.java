@@ -28,4 +28,6 @@ public class Expense {
     @ManyToOne
     private Category category;
 
+    @ManyToOne
+    private User user;
 }
