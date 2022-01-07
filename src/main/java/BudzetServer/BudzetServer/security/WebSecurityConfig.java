@@ -84,9 +84,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.addFilterBefore(getJwtAuthFilter(), UsernamePasswordAuthenticationFilter.class);
     }
-
-//    public void configure(AuthenticationManagerBuilder authenticationManagerBuilder)
-//    {
-//        authenticationManagerBuilder.userDetailsService();
-//    }
 }

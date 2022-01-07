@@ -3,6 +3,7 @@ package BudzetServer.BudzetServer.controller;
 import BudzetServer.BudzetServer.dto.LoginRequest;
 import BudzetServer.BudzetServer.dto.LoginResponse;
 import BudzetServer.BudzetServer.model.CustomUserDetails;
+import BudzetServer.BudzetServer.model.User;
 import BudzetServer.BudzetServer.repository.UserRepository;
 import BudzetServer.BudzetServer.security.JwtTokenProvider;
 import lombok.Data;
@@ -32,14 +33,14 @@ public class AuthController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> login(@Valid @RequestBody User loginRequest) {
         String username = loginRequest.getLogin();
         String password = loginRequest.getPassword();
 
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(username, password);
         Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtTokenProvider.createToken(new UsernamePasswordAuthenticationToken(username, password));
+        String jwt = jwtTokenProvider.createToken(loginRequest);
 
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
