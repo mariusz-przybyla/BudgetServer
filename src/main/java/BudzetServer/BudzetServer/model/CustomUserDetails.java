@@ -12,8 +12,8 @@ public class CustomUserDetails extends User implements UserDetails {
 
 
     public CustomUserDetails(User user) {
-        this.setLogin(getLogin());
-        this.setPassword(getPassword());
+        this.setLogin(user.getLogin());
+        this.setPassword(user.getPassword());
     }
 
     @Override
