@@ -12,6 +12,7 @@ public class CustomUserDetails extends User implements UserDetails {
 
 
     public CustomUserDetails(User user) {
+        this.setId(user.getId());
         this.setLogin(user.getLogin());
         this.setPassword(user.getPassword());
     }
