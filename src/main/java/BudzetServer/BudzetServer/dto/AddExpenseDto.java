@@ -10,4 +10,5 @@ public class AddExpenseDto {
     private String name;
     private Double price;
     private Long categoryId;
+    private String createdAt;
 }

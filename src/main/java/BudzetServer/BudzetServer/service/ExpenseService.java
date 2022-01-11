@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,6 +52,7 @@ public class ExpenseService {
     @Transactional
     public ExpenseDto addExpense(AddExpenseDto addExpenseDto, User user)
     {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:MM:ss");
         Expense expense = new Expense();
         Category category = new Category();
 
@@ -58,6 +61,7 @@ public class ExpenseService {
         expense.setPrice(addExpenseDto.getPrice());
         expense.setCategory(category);
         expense.setUser(user);
+        expense.setCreatedAt(LocalDateTime.now().format(dtf));
         Expense result = expenseRepository.save(expense);
 
         return getExpense(result.getId(), user);
