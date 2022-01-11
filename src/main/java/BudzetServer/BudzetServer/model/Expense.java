@@ -3,11 +3,8 @@ package BudzetServer.BudzetServer.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
