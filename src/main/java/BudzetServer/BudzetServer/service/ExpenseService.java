@@ -27,7 +27,7 @@ public class ExpenseService {
     public List<ExpenseDto> getAllExpenses(User user)
     {
         return expenseRepository.findAllByUser(user).stream()
-                .map(item -> getExpense(item.getId(), user))
+                .map(this::mapToExpenseDto)
                 .collect(Collectors.toList());
     }
 
@@ -40,19 +40,13 @@ public class ExpenseService {
     {
         return expenseRepository
                 .findByIdAndUser(id, user)
-                .map(c -> ExpenseDto.builder()
-                        .id(c.getId())
-                        .name(c.getName())
-                        .price(c.getPrice())
-                        .type(c.getCategory().getName())
-                        .build())
+                .map(this::mapToExpenseDto)
                 .orElseThrow(() -> new NotFoundException("Resource not found"));
     }
 
     @Transactional
     public ExpenseDto addExpense(AddExpenseDto addExpenseDto, User user)
     {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:MM:ss");
         Expense expense = new Expense();
         Category category = new Category();
 
@@ -61,7 +55,7 @@ public class ExpenseService {
         expense.setPrice(addExpenseDto.getPrice());
         expense.setCategory(category);
         expense.setUser(user);
-        expense.setCreatedAt(LocalDateTime.now().format(dtf));
+        expense.setCreatedAt(LocalDateTime.now());
         Expense result = expenseRepository.save(expense);
 
         return getExpense(result.getId(), user);
@@ -74,7 +68,7 @@ public class ExpenseService {
 
     public ExpenseDto changeElement(AddExpenseDto addExpenseDto, Long id, User user)
     {
-        return expenseRepository.findById(id)
+        return expenseRepository.findByIdAndUser(id, user)
                 .map(e -> {
                     Category category = new Category();
                     category.setId(addExpenseDto.getCategoryId());
@@ -86,5 +80,16 @@ public class ExpenseService {
                 })
                 .map(e -> getExpense(e.getId(), user))
                 .orElseThrow();
+    }
+
+    private ExpenseDto mapToExpenseDto(Expense expense){
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:MM");
+        return ExpenseDto.builder()
+                .id(expense.getId())
+                .name(expense.getName())
+                .price(expense.getPrice())
+                .type(expense.getCategory().getName())
+                .createdAt(expense.getCreatedAt().format(dtf))
+                .build();
     }
 }
