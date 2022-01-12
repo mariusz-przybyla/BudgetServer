@@ -83,7 +83,7 @@ public class ExpenseService {
     }
 
     private ExpenseDto mapToExpenseDto(Expense expense){
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:MM");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         return ExpenseDto.builder()
                 .id(expense.getId())
                 .name(expense.getName())
