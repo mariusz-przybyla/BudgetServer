@@ -19,7 +19,5 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-
-//    parametr weszło/wyszlo 1 - wpływy, -1 - wydatki(koszty)
     private Integer io;
 }

@@ -2,10 +2,6 @@ package BudzetServer.BudzetServer.dto;
 
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.data.annotation.CreatedDate;
-
-import java.time.LocalDateTime;
-import java.util.Date;
 
 @Data
 @Builder

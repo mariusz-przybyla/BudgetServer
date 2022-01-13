@@ -1,11 +1,9 @@
 package BudzetServer.BudzetServer.security;
 
-import BudzetServer.BudzetServer.model.CustomUserDetails;
 import BudzetServer.BudzetServer.model.User;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
@@ -35,36 +33,6 @@ public class JwtTokenProvider {
                 .addClaims(claims)
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
-    }
-
-    public boolean validateToken(String token)
-    {
-        try
-        {
-            Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
-            return true;
-        } catch (SignatureException ex)
-        {
-            System.out.println("Invalid JWT Signature");
-        }
-        catch (MalformedJwtException ex)
-        {
-            System.out.println("Invalid JWT Token");
-        }
-        catch (ExpiredJwtException ex)
-        {
-            System.out.println("Expired JWT Token");
-            System.out.println(ex.getMessage());
-        }
-        catch (UnsupportedJwtException ex)
-        {
-            System.out.println("Unsupported JWT Token");
-        }
-        catch (IllegalArgumentException ex)
-        {
-            System.out.println("JWT claims string is empty");
-        }
-        return false;
     }
 
     public UsernamePasswordAuthenticationToken getAuthentication(String token)

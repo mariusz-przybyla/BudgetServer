@@ -20,7 +20,6 @@ public class CustomUserDetails extends User implements UserDetails {
         this.setLastName(user.getLastName());
     }
 
-//    odpowiedzilane za uprawnienia
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities()
     {

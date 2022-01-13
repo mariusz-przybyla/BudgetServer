@@ -5,7 +5,6 @@ import BudzetServer.BudzetServer.model.User;
 import BudzetServer.BudzetServer.repository.UserRepository;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
