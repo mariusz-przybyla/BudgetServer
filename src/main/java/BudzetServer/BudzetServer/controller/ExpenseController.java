@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -58,8 +59,9 @@ public class ExpenseController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PutMapping("/expense/{id}")
-    public ExpenseDto changeElement(@RequestBody AddExpenseDto addExpenseDto, Long id, Authentication authentication)
+    public ExpenseDto changeElement(@Valid @RequestBody AddExpenseDto addExpenseDto, @PathVariable Long id, Authentication authentication)
     {
+        Long test = id;
         User user = (User)authentication.getPrincipal();
         return expenseService.changeElement(addExpenseDto, id, user);
     }
